@@ -1,4 +1,4 @@
-package no.hamre.springboot.openapi3.openapi3
+package no.hamre.springboot.openapi3
 
 import no.hamre.springboot.openapi3.rest.model.Author
 import no.hamre.springboot.openapi3.rest.model.Book

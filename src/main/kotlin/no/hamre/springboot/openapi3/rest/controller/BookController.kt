@@ -1,14 +1,21 @@
 package no.hamre.springboot.openapi3.rest.controller
 
-import no.hamre.springboot.openapi3.openapi3.BookRepositoory
+import no.hamre.springboot.openapi3.BookRepositoory
 import no.hamre.springboot.openapi3.rest.model.Book
-import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
-@Controller
+
+@RestController
 class BookController {
 
-  fun addBook(book: Book): Unit {
+  @RequestMapping(path = ["/v1/books"], method = [RequestMethod.POST])
+  fun addBook(@Valid @RequestBody book: Book): Book {
     BookRepositoory.addBook(book)
+    return book
   }
 
   fun updateBook(book: Book): Unit {
