@@ -1,5 +1,10 @@
 package no.hamre.springboot.openapi3.rest.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.security.OAuthFlow
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import no.hamre.springboot.openapi3.BookRepositoory
 import no.hamre.springboot.openapi3.rest.model.Book
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,6 +18,11 @@ import javax.validation.Valid
 class BookController {
 
   @RequestMapping(path = ["/v1/books"], method = [RequestMethod.POST])
+  @Operation(
+      security = [
+        SecurityRequirement(name = "bearerToken", scopes = ["book.write"]),
+        SecurityRequirement(name = "basicAuth")]
+  )
   fun addBook(@Valid @RequestBody book: Book): Book {
     BookRepositoory.addBook(book)
     return book
