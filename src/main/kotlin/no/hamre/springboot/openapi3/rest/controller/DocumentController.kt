@@ -1,31 +1,54 @@
 package no.hamre.springboot.openapi3.rest.controller
 
+/*
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.Link.REL_SELF
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
+*/
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
-import java.net.URI
-import javax.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.NotBlank
 
-@Api(tags = "Document")
+//@Api(tags = "Document")
 @Validated
 @RestController
-@RequestMapping(value = [EPS_DOCUMENTS_PATH])
+@RequestMapping("/v1/documents")
 class DocumentController {
 
     @GetMapping(value = ["/{uid}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ApiImplicitParam(name = "Authorization", value = "Bearer token", dataType = "string", paramType = "header", required = true)
-    @ApiOperation(value = "Get document identified by the uniqueIdentifier provided by EPS during document creation", nickname = "getDocument")
-    @ApiResponses(value = [ApiResponse(code = 400, message = "Bad Request", response = ErrorResponse::class), ApiResponse(code = 401, message = "Unauthorized access", response = ErrorResponse::class), ApiResponse(code = 403, message = "Access not allowed", response = ErrorResponse::class), ApiResponse(code = 404, message = "Document not found", response = ErrorResponse::class), ApiResponse(code = 500, message = "Server error", response = ErrorResponse::class)])
+    @Operation(
+        description = "Get document identified by the uniqueIdentifier provided by EPS during document creation",
+        parameters = [
+            Parameter(name = "Authorization", description = "Bearer token", schema = Schema(type = "string"), required = true, `in` = ParameterIn.HEADER )
+        ]
+    )
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "OK"),
+        ApiResponse(responseCode = "400", description = "Bad Request"), //response = ErrorResponse::class),
+        ApiResponse(responseCode = "401", description = "Unauthorized access"), //, response = ErrorResponse::class),
+        ApiResponse(responseCode = "403", description = "Access not allowed"), //, response = ErrorResponse::class),
+        ApiResponse(responseCode = "404", description = "Document not found"), //, response = ErrorResponse::class),
+        ApiResponse(responseCode = "500", description = "Server error")]) //, response = ErrorResponse::class)])
     fun getDocument(
-        @ApiParam(value = "Document uniqueIdentifier", required = true) @PathVariable("uid") uid: @NotBlank String?
+        @Parameter(description = "Document uniqueIdentifier", required = true, `in` = ParameterIn.PATH)
+        @PathVariable("uid")
+        uid: @NotBlank String?
     ): ResponseEntity<DocumentResource> {
         return ResponseEntity.ok(DocumentResource())
     }
+/*
 
     @GetMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ApiImplicitParam(name = "Authorization", value = "Bearer token", dataType = "string", paramType = "header", required = true)
@@ -100,6 +123,7 @@ class DocumentController {
     ): ResponseEntity<DocumentDetailRequest> {
         return ResponseEntity.ok(DocumentDetailRequest())
     }
+*/
 
 }
 
@@ -107,9 +131,10 @@ class DocumentDetailRequest {
 
 }
 
-class DocumentResource {
-
-}
+data class DocumentResource(
+    val id: Long = 1,
+    val name: String = "Name"
+)
 
 class ErrorResponse {
 
