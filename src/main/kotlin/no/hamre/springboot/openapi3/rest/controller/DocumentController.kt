@@ -8,6 +8,7 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
 //@Api(tags = "Document")
 @Validated
@@ -35,12 +37,13 @@ class DocumentController {
         ]
     )
     @ApiResponses(value = [
-        ApiResponse(responseCode = "200", description = "OK"),
+        ApiResponse(responseCode = "200", description = "successful operation",
+            content = [Content(schema = Schema(implementation = DocumentResource::class))]),
         ApiResponse(responseCode = "400", description = "Bad Request"), //response = ErrorResponse::class),
         ApiResponse(responseCode = "401", description = "Unauthorized access"), //, response = ErrorResponse::class),
         ApiResponse(responseCode = "403", description = "Access not allowed"), //, response = ErrorResponse::class),
         ApiResponse(responseCode = "404", description = "Document not found"), //, response = ErrorResponse::class),
-        ApiResponse(responseCode = "500", description = "Server error")]) //, response = ErrorResponse::class)])
+        ApiResponse(    responseCode = "500", description = "Server error")]) //, response = ErrorResponse::class)])
     fun getDocument(
         @Parameter(description = "Document uniqueIdentifier", required = true, `in` = ParameterIn.PATH)
         @PathVariable("uid")
@@ -133,6 +136,7 @@ class DocumentDetailRequest {
 
 data class DocumentResource(
     val id: Long = 1,
+    @field:NotNull
     val name: String = "Name"
 )
 
