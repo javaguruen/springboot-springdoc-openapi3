@@ -4,20 +4,17 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.security.SecurityScheme
 import io.swagger.v3.oas.annotations.security.SecuritySchemes
 import io.swagger.v3.oas.annotations.servers.Server
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
 
 @SpringBootApplication
 @OpenAPIDefinition(
-    info = Info(title = "Somerthing"),
+    info = Info(title = "Open API 3.0 example app."),
     servers = [
-      Server(url = "url", description = "decr", )
+      Server(url = "http://localhost:8080/", description = "base url", )
     ],
     security = [
       SecurityRequirement(name = "basicAuth"),
@@ -40,5 +37,6 @@ import org.springframework.context.annotation.Bean
 class Openapi3Application
 
 fun main(args: Array<String>) {
+
   runApplication<Openapi3Application>(*args)
 }

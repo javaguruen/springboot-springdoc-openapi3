@@ -1,10 +1,7 @@
 package no.hamre.springboot.openapi3.rest.controller
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
-import io.swagger.v3.oas.annotations.security.OAuthFlow
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import io.swagger.v3.oas.annotations.security.SecurityScheme
 import no.hamre.springboot.openapi3.BookRepositoory
 import no.hamre.springboot.openapi3.rest.model.Book
 import org.springframework.web.bind.annotation.RequestBody
